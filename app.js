@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const authController = require('./controllers/auth.controller');
+const ingredientController = require('./controllers/recipe/ingredient.controller');
 const responseHelper = require('./helpers/response.helper');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api/auth', authController);
+app.use('/api/ingredient', ingredientController);
 
 app.use((err, req, res, next) => {
 	if (err instanceof ValidationError) {

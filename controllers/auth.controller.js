@@ -23,7 +23,8 @@ router.post('/register', authValidations.register, async (req, res) => {
 		userToAdd.password = authHelper.hashPassword(req.body.password);
 		await userToAdd.save();
 		return responseHandler.handleOKResponse(res, {
-			message: 'USER_ADDED'
+			message: 'USER_ADDED',
+			email: userToAdd.email
 		});
 	} catch (err) {
 		return responseHandler.handleUnexpectedError(res, {

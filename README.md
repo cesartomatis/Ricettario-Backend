@@ -10,3 +10,9 @@ Add a config.json file in the config folder with the following data:
 "SESSION_EXPIRATION": EXPIRATION_TIME
 }
 }
+
+---
+
+Change all references of joi to @hapi/joi
+
+---

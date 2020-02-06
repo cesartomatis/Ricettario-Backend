@@ -1,5 +1,5 @@
 const validate = require('express-validation');
-const joi = require('joi');
+const joi = require('@hapi/joi');
 
 module.exports = {
 	login: validate({
