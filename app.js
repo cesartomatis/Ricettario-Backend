@@ -2,7 +2,7 @@ require('./config/config');
 require('./db/mongoose');
 
 const express = require('express');
-const ValidationError = require('express-validation').ValidationError;
+const { errors, isCelebrate } = require('celebrate');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -15,8 +15,9 @@ app.use(cors());
 
 app.use('/api/auth', authController);
 
+// app.use(errors())
 app.use((err, req, res, next) => {
-	if (err instanceof ValidationError) {
+	if (isCelebrate(err)) {
 		return responseHelper.handleValidationError(res, err);
 	} else {
 		return responseHelper.handleUnexpectedError(res, {

@@ -5,31 +5,15 @@ const handleOKResponse = (res, dto) => {
 };
 
 const handleUnexpectedError = (res, dto) => {
-	let errorMessage;
-	console.log(dto.error);
-	if (dto.error && dto.error.message == 'MongoError') {
-		errorMessage = 'DB_ERROR';
-	}
-	return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
-		status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-		statusText: HTTP_STATUS.getStatusText(HTTP_STATUS.INTERNAL_SERVER_ERROR),
-		fieldsError: [],
-		errorMessage: errorMessage || dto.message,
-		errorObj: error
-	});
+	return res
+		.status(dto.error.statusCode)
+		.send({ message: dto.message, ...dto.error });
 };
 
 const handleValidationError = (res, error) => {
-	error.errors.forEach((error) => {
-		delete error.location;
-		delete error.types;
-	});
-	return res.status(HTTP_STATUS.BAD_REQUEST).send({
-		status: HTTP_STATUS.BAD_REQUEST,
-		statusText: HTTP_STATUS.getStatusText(HTTP_STATUS.BAD_REQUEST),
-		fieldsError: error.errors,
-		errorMessage: 'Validation Error'
-	});
+	return res
+		.status(HTTP_STATUS.BAD_REQUEST)
+		.send({ message: 'CELEBRATE_VALIDATION_ERROR', ...error });
 };
 
 const handleCustomErrorResponse = (res, httpStatusCode, errorMessage) => {
