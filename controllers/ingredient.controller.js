@@ -1,14 +1,14 @@
 const router = require('express').Router();
 
-const ingredientValidations = require('../../middlewares/validations/recipe/ingredient.validations');
-const authorize = require('../../middlewares/authorize');
-const responseHandler = require('../../helpers/response.helper');
+const authorize = require('../middlewares/authorize');
+const responseHandler = require('../helpers/response.helper');
+const ingredientValidations = require('../middlewares/validations/ingredient.validations');
 
-const Ingredient = require('../../models/recipe/ingredient.model');
+const Ingredient = require('../models/ingredient.model');
 
 router.post(
 	'/add',
-	[authorize, ingredientValidations.addIngredient],
+	[authorize, ingredientValidations.addOrUpdateIngredient],
 	async (req, res) => {
 		try {
 			const ingredientToAdd = new Ingredient({
@@ -69,7 +69,7 @@ router.get('/list', authorize, async (req, res) => {
 
 router.put(
 	'/update/:id',
-	[authorize, ingredientValidations.addIngredient],
+	[authorize, ingredientValidations.addOrUpdateIngredient],
 	async (req, res) => {
 		try {
 			const ingredientToUpdate = {

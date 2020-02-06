@@ -2,10 +2,19 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-const createAuthToken = (userId) => {
-	let token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-		expiresIn: `${process.env.SESSION_EXPIRATION}d`
-	});
+const createAuthToken = (user) => {
+	let token = jwt.sign(
+		{
+			id: user._id,
+			email: user.email,
+			firstName: user.firstName,
+			lastName: user.lastName
+		},
+		process.env.JWT_SECRET,
+		{
+			expiresIn: `${process.env.SESSION_EXPIRATION}d`
+		}
+	);
 	return token;
 };
 

@@ -57,7 +57,7 @@ router.get('/checksession', authorize, async (req, res) => {
 
 router.post('/login', authValidations.login, async (req, res) => {
 	try {
-		const user = await User.findOne({ email: req.body.email });
+		let user = await User.findOne({ email: req.body.email });
 		let passwordValid = false;
 		if (user) {
 			passwordValid = authHelper.isPasswordValid(
@@ -71,12 +71,13 @@ router.post('/login', authValidations.login, async (req, res) => {
 				'INCORRECT_USER_PASSWORD'
 			);
 		}
-		const token = authHelper.createAuthToken(user._id);
+		const token = authHelper.createAuthToken(user);
 		return responseHandler.handleOKResponse(res, {
-			email: req.body.email,
+			message: 'USER_LOGGED_IN',
 			token
 		});
 	} catch (err) {
+		console.log('LOGIN_ERROR', err);
 		return responseHandler.handleUnexpectedError(res, {
 			message: 'LOGIN_ERROR',
 			error: err

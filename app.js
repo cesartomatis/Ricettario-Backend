@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const authController = require('./controllers/auth.controller');
-const ingredientController = require('./controllers/recipe/ingredient.controller');
+const ingredientController = require('./controllers/ingredient.controller');
+const recipeController = require('./controllers/recipe.controller');
 const responseHelper = require('./helpers/response.helper');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use('/api/auth', authController);
 app.use('/api/ingredient', ingredientController);
+app.use('/api/recipe', recipeController);
 
 app.use((err, req, res, next) => {
 	if (isCelebrate(err)) {

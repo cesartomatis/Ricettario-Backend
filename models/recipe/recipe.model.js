@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const Directions = require('./directions.schema');
-const NutritionFacts = require('./nutrition-facts.schema');
+const Ingredients = require('./ingredients-recipe.schema');
+const NutritionFacts = require('../nutrition-facts/nutrition-facts.schema');
 
 const Recipe = mongoose.model(
 	'recipes',
@@ -26,12 +27,12 @@ const Recipe = mongoose.model(
 		editedBy: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'users',
-			required: true,
+			required: false,
 			unique: false
 		},
 		editedIn: {
 			type: Number,
-			required: true,
+			required: false,
 			unique: false
 		},
 		title: {
@@ -39,6 +40,11 @@ const Recipe = mongoose.model(
 			required: true,
 			minlength: 1,
 			trim: true,
+			unique: false
+		},
+		ingredients: {
+			type: [Ingredients],
+			required: true,
 			unique: false
 		},
 		directions: {

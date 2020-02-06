@@ -5,9 +5,10 @@ const handleOKResponse = (res, dto) => {
 };
 
 const handleUnexpectedError = (res, dto) => {
-	return res
-		.status(dto.error.statusCode)
-		.send({ message: dto.message, ...dto.error });
+	const statusCode = dto.error.statusCode
+		? dto.error.statusCode
+		: HTTP_STATUS.SERVICE_UNAVAILABLE;
+	return res.status(statusCode).send({ message: dto.message, ...dto.error });
 };
 
 const handleValidationError = (res, error) => {

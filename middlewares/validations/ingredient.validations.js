@@ -1,7 +1,7 @@
 const { celebrate, Joi, Segments } = require('celebrate');
 
 module.exports = {
-	addIngredient: celebrate({
+	addOrUpdateIngredient: celebrate({
 		[Segments.BODY]: Joi.object().keys({
 			name: Joi.string()
 				.min(1)
