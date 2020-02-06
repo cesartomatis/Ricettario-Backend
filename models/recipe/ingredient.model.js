@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const NutritionFacts = require('./nutrition-facts.schema');
+const NutritionFacts = require('./nutrition-facts/nutrition-facts.schema');
 
 const Ingredient = mongoose.model(
 	'ingredients',
@@ -8,6 +8,13 @@ const Ingredient = mongoose.model(
 		name: {
 			type: String,
 			required: true,
+			minlength: 1,
+			trim: true,
+			unique: false
+		},
+		brand: {
+			type: String,
+			required: false,
 			minlength: 1,
 			trim: true,
 			unique: false

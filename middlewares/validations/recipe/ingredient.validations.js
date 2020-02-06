@@ -1,30 +1,34 @@
-const validate = require('express-validation');
-const joi = require('@hapi/joi');
+const { celebrate, Joi, Segments } = require('celebrate');
 
 module.exports = {
-	addIngredient: validate({
-		body: {
-			name: joi
-				.string()
+	addIngredient: celebrate({
+		[Segments.BODY]: Joi.object().keys({
+			name: Joi.string()
 				.min(1)
 				.required(),
-			nutritionFacts: joi
-				.array()
+			nutritionFacts: Joi.array()
 				.items(
-					joi.object({
-						name: joi
-							.string()
+					Joi.object({
+						name: Joi.string()
 							.min(1)
 							.required(),
-						valuePerServing: joi
-							.string()
-							.min(1)
-							.required(),
-						valuePerHundred: joi.string().min(1)
+						valuePerServing: Joi.object().keys({
+							value: Joi.number().required(),
+							unit: Joi.string()
+								.min(1)
+								.required()
+						}),
+						valuePerHundred: Joi.object().keys({
+							value: Joi.number().required(),
+							unit: Joi.string()
+								.min(1)
+								.required()
+						})
 					})
 				)
 				.required(),
-			icon: joi.string().min(1)
-		}
+			brand: Joi.string().min(1),
+			icon: Joi.string().min(1)
+		})
 	})
 };

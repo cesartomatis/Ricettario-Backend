@@ -1,37 +1,30 @@
-const validate = require('express-validation');
-const joi = require('@hapi/joi');
+const { celebrate, Joi, Segments } = require('celebrate');
 
 module.exports = {
-	login: validate({
-		body: {
-			email: joi
-				.string()
+	login: celebrate({
+		[Segments.BODY]: Joi.object().keys({
+			email: Joi.string()
 				.email()
 				.required(),
-			password: joi
-				.string()
+			password: Joi.string()
 				.min(6)
 				.required()
-		}
+		})
 	}),
-	register: validate({
-		body: {
-			email: joi
-				.string()
+	register: celebrate({
+		[Segments.BODY]: Joi.object().keys({
+			email: Joi.string()
 				.email()
 				.required(),
-			password: joi
-				.string()
+			password: Joi.string()
 				.min(6)
 				.required(),
-			firstName: joi
-				.string()
+			firstName: Joi.string()
 				.min(1)
 				.required(),
-			lastName: joi
-				.string()
+			lastName: Joi.string()
 				.min(1)
 				.required()
-		}
+		})
 	})
 };
