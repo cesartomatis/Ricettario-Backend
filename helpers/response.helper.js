@@ -5,10 +5,20 @@ const handleOKResponse = (res, dto) => {
 };
 
 const handleUnexpectedError = (res, dto) => {
+	let errorMessage = dto.message;
+	if (dto.error && dto.error.message == 'MongoError') {
+		errorMessage = 'DB_ERROR';
+	}
 	const statusCode = dto.error.statusCode
 		? dto.error.statusCode
 		: HTTP_STATUS.SERVICE_UNAVAILABLE;
-	return res.status(statusCode).send({ message: dto.message, ...dto.error });
+	return res.status(statusCode).send({
+		status: statusCode,
+		statusText: HTTP_STATUS.getStatusText(statusCode),
+		fieldsError: [],
+		errorMessage: errorMessage,
+		errorObj: { ...dto.error }
+	});
 };
 
 const handleValidationError = (res, error) => {

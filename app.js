@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
 	} else {
 		return responseHelper.handleUnexpectedError(res, {
 			message: 'UNEXPECTED_ERROR',
-			error: err
+			error: { ...err }
 		});
 	}
 });
