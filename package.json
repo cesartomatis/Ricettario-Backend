@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "SET NODE_ENV=dev | npm run nodemon",
+		"dev": "cross-env NODE_ENV=dev npm run nodemon",
 		"nodemon": "nodemon app.js"
 	},
 	"repository": {
@@ -22,6 +22,7 @@
 		"body-parser": "^1.19.0",
 		"celebrate": "^11.0.1",
 		"cors": "^2.8.5",
+		"cross-env": "^7.0.0",
 		"crypto": "^1.0.1",
 		"express": "^4.17.1",
 		"http-status-codes": "^1.4.0",
