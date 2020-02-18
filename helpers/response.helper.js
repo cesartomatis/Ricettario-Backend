@@ -17,7 +17,7 @@ const handleUnexpectedError = (res, dto) => {
 		statusText: HTTP_STATUS.getStatusText(statusCode),
 		fieldsError: [],
 		errorMessage: errorMessage,
-		errorObj: { ...dto.error }
+		errorObj: dto.error
 	});
 };
 
