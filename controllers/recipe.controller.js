@@ -4,8 +4,10 @@ const moment = require('moment');
 const authorize = require('../middlewares/authorize');
 const responseHandler = require('../helpers/response.helper');
 const recipeValidations = require('../middlewares/validations/recipe.validations');
+const { setUsersNames } = require('../helpers/recipe.helper');
 
 const Recipe = require('../models/recipe/recipe.model');
+const User = require('../models/user.model');
 
 router.post(
 	'/add',
@@ -52,6 +54,7 @@ router.get('/userlist', authorize, async (req, res) => {
 		if (!recipes) {
 			return responseHandler.handleBadRequestError(res, 'NO_RECIPES_FOUND');
 		}
+		recipes = await setUsersNames(recipes, User);
 		return responseHandler.handleOKResponse(res, {
 			message: 'RECIPES_FOUND',
 			recipes
@@ -70,9 +73,23 @@ router.get('/listpublic', async (req, res) => {
 		if (!recipes) {
 			return responseHandler.handleBadRequestError(res, 'NO_RECIPES_FOUND');
 		}
+		// let creator;
+		// let editor;
+		// for (let r of recipes) {
+		// 	creator = await User.findById(r.createdBy);
+		// 	console.log(creator);
+		// 	if (creator) {
+		// 		r.createdBy = `${creator.firstName} ${creator.lastName}`;
+		// 	}
+		// 	editor = await User.findById(r.editedBy);
+		// 	if (editor) {
+		// 		r.editedBy = `${editor.firstName} ${editor.lastName}`;
+		// 	}
+		// }
+		const recipesToReturn = await setUsersNames(recipes, User);
 		return responseHandler.handleOKResponse(res, {
 			message: 'PUBLIC_RECIPES',
-			recipes
+			recipesToReturn
 		});
 	} catch (err) {
 		return responseHandler.handleUnexpectedError(res, {
@@ -97,6 +114,7 @@ router.get('/listall', authorize, async (req, res) => {
 		} else {
 			recipes = [...privateRecipes, ...publicRecipes];
 		}
+		recipes = await setUsersNames(recipes, User);
 		return responseHandler.handleOKResponse(res, {
 			message: 'ALL_RECIPES',
 			recipes

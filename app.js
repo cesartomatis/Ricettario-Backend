@@ -15,6 +15,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+console.log('ENVIRONMENT: ', process.env.NODE_ENV);
+
 app.use('/api/auth', authController);
 app.use('/api/ingredient', ingredientController);
 app.use('/api/recipe', recipeController);
