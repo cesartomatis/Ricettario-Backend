@@ -89,7 +89,7 @@ router.get('/listpublic', async (req, res) => {
 		const recipesToReturn = await setUsersNames(recipes, User);
 		return responseHandler.handleOKResponse(res, {
 			message: 'PUBLIC_RECIPES',
-			recipesToReturn
+			recipes: recipesToReturn
 		});
 	} catch (err) {
 		return responseHandler.handleUnexpectedError(res, {

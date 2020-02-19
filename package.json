@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "cross-env NODE_ENV=dev npm run nodemon",
-		"nodemon": "nodemon app.js"
+		"nodemon": "nodemon --inspect app.js"
 	},
 	"repository": {
 		"type": "git",

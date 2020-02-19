@@ -6,13 +6,13 @@ const setUsersNames = async (recipes, User) => {
 		const recipe = r.toObject();
 		creator = await User.findById(r.createdBy);
 		if (creator) {
-			const { firstName, lastName, _id, email } = creator;
-			recipe.createdBy = { firstName, lastName, _id, email };
+			const { firstName, lastName, email } = creator;
+			recipe.creator = { firstName, lastName, email };
 		}
 		editor = await User.findById(r.createdBy);
 		if (editor) {
-			const { firstName, lastName, _id, email } = editor;
-			recipe.editedBy = { firstName, lastName, _id, email };
+			const { firstName, lastName, email } = editor;
+			recipe.editor = { firstName, lastName, email };
 		}
 		recipesToReturn.push(recipe);
 	}
