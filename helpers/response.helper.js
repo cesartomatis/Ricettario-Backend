@@ -5,6 +5,7 @@ const handleOKResponse = (res, dto) => {
 };
 
 const handleUnexpectedError = (res, dto) => {
+	console.log('[response.helper.js] - handleUnexpectedError - dto', dto);
 	let errorMessage = dto.message;
 	if (dto.error && dto.error.message == 'MongoError') {
 		errorMessage = 'DB_ERROR';
@@ -17,7 +18,8 @@ const handleUnexpectedError = (res, dto) => {
 		statusText: HTTP_STATUS.getStatusText(statusCode),
 		fieldsError: [],
 		errorMessage: errorMessage,
-		errorObj: dto.error
+		errorObj: dto.error,
+		errorStr: dto.error.toString()
 	});
 };
 

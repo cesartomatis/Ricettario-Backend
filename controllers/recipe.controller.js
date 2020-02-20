@@ -1,9 +1,13 @@
 const router = require('express').Router();
 const moment = require('moment');
+const path = require('path');
 
 const authorize = require('../middlewares/authorize');
-const responseHandler = require('../helpers/response.helper');
+const parseBody = require('../middlewares/parse-body');
+const imageUpload = require('../middlewares/images/image-upload');
+const imageResize = require('../middlewares/images/image-resize');
 const recipeValidations = require('../middlewares/validations/recipe.validations');
+const responseHandler = require('../helpers/response.helper');
 const { setUsersNames } = require('../helpers/recipe.helper');
 
 const Recipe = require('../models/recipe/recipe.model');
@@ -11,7 +15,13 @@ const User = require('../models/user.model');
 
 router.post(
 	'/add',
-	[authorize, recipeValidations.addOrUpdateRecipe],
+	[
+		authorize,
+		imageUpload.single('image'),
+		parseBody,
+		imageResize,
+		recipeValidations.addOrUpdateRecipe
+	],
 	async (req, res) => {
 		try {
 			const creationTime = moment().format('X');
@@ -24,24 +34,29 @@ router.post(
 
 			const recipeToAdd = new Recipe({
 				isPublic: req.body.isPublic,
-				createdBy: req.body.createdBy,
+				createdBy: req.userId,
 				createdIn: creationTime,
 				editedIn: creationTime,
 				title: req.body.title,
 				ingredients: req.body.ingredients,
 				directions: req.body.directions,
 				tips: req.body.tips,
-				nutritionFacts: req.body.nutritionFacts,
-				photo: req.body.photo
+				nutritionFacts: req.body.nutritionFacts
 			});
-			await recipeToAdd.save();
+			if (req.photoPath) {
+				recipeToAdd.photo = req.photoPath;
+			} else {
+				recipeToAdd.photo = `uploads/`;
+			}
+			recipeToAdd.save();
 			return responseHandler.handleOKResponse(res, {
 				message: 'RECIPE_ADDED',
-				name: recipeToAdd.title
+				recipe: recipeToAdd
 			});
 		} catch (err) {
+			console.log('[recipe.controller.js] - addRecipe - error', err);
 			return responseHandler.handleUnexpectedError(res, {
-				message: 'ADD_RECIPE_ERROR',
+				message: 'ADD_RECIPE_PHOTO_ERROR',
 				error: err
 			});
 		}
@@ -73,19 +88,6 @@ router.get('/listpublic', async (req, res) => {
 		if (!recipes) {
 			return responseHandler.handleBadRequestError(res, 'NO_RECIPES_FOUND');
 		}
-		// let creator;
-		// let editor;
-		// for (let r of recipes) {
-		// 	creator = await User.findById(r.createdBy);
-		// 	console.log(creator);
-		// 	if (creator) {
-		// 		r.createdBy = `${creator.firstName} ${creator.lastName}`;
-		// 	}
-		// 	editor = await User.findById(r.editedBy);
-		// 	if (editor) {
-		// 		r.editedBy = `${editor.firstName} ${editor.lastName}`;
-		// 	}
-		// }
 		const recipesToReturn = await setUsersNames(recipes, User);
 		return responseHandler.handleOKResponse(res, {
 			message: 'PUBLIC_RECIPES',

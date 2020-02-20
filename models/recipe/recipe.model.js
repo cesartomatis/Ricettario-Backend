@@ -53,7 +53,7 @@ const Recipe = mongoose.model(
 			unique: false
 		},
 		tips: {
-			type: [String],
+			type: String,
 			required: false,
 			unique: false
 		},

@@ -14,6 +14,7 @@ const responseHelper = require('./helpers/response.helper');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+app.use('/api/uploads', express.static('uploads'));
 
 console.log('ENVIRONMENT: ', process.env.NODE_ENV);
 
