@@ -41,7 +41,11 @@ router.post(
 				ingredients: req.body.ingredients,
 				directions: req.body.directions,
 				tips: req.body.tips,
-				nutritionFacts: req.body.nutritionFacts
+				preparationTime: req.body.preparationTime,
+				cookingTime: req.body.cookingTime,
+				difficulty: req.body.difficulty,
+				servings: req.body.servings,
+				readyIn: (+req.body.preparationTime + req.body.cookingTime).toString()
 			});
 			if (req.photoPath) {
 				recipeToAdd.photo = req.photoPath;

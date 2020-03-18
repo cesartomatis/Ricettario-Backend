@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const authController = require('./controllers/auth.controller');
-const ingredientController = require('./controllers/ingredient.controller');
+// const ingredientController = require('./controllers/ingredient.controller');
 const recipeController = require('./controllers/recipe.controller');
 const responseHelper = require('./helpers/response.helper');
 
@@ -19,7 +19,7 @@ app.use('/api/uploads', express.static('uploads'));
 console.log('ENVIRONMENT: ', process.env.NODE_ENV);
 
 app.use('/api/auth', authController);
-app.use('/api/ingredient', ingredientController);
+// app.use('/api/ingredient', ingredientController);
 app.use('/api/recipe', recipeController);
 
 app.use((err, req, res, next) => {

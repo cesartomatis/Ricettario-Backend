@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const Directions = require('./directions.schema');
-const Ingredients = require('./ingredients-recipe.schema');
+const Ingredients = require('../ingredient/ingredient.model');
 const NutritionFacts = require('../nutrition-facts/nutrition-facts.schema');
 
 const Recipe = mongoose.model(
@@ -48,7 +47,7 @@ const Recipe = mongoose.model(
 			unique: false
 		},
 		directions: {
-			type: [Directions],
+			type: [String],
 			required: true,
 			unique: false
 		},
@@ -59,6 +58,31 @@ const Recipe = mongoose.model(
 		},
 		nutritionFacts: {
 			type: [NutritionFacts],
+			required: true,
+			unique: false
+		},
+		preparationTime: {
+			type: Number,
+			required: true,
+			unique: false
+		},
+		cookingTime: {
+			type: Number,
+			required: true,
+			unique: false
+		},
+		readyIn: {
+			type: Number,
+			required: true,
+			unique: false
+		},
+		difficulty: {
+			type: String,
+			required: true,
+			unique: false
+		},
+		servings: {
+			type: Number,
 			required: true,
 			unique: false
 		},
