@@ -58,7 +58,7 @@ const Recipe = mongoose.model(
 		},
 		nutritionFacts: {
 			type: [NutritionFacts],
-			required: true,
+			required: false,
 			unique: false
 		},
 		preparationTime: {

@@ -8,7 +8,7 @@ const imageUpload = require('../middlewares/images/image-upload');
 const imageResize = require('../middlewares/images/image-resize');
 const recipeValidations = require('../middlewares/validations/recipe.validations');
 const responseHandler = require('../helpers/response.helper');
-const { setUsersNames } = require('../helpers/recipe.helper');
+const { setUsersNames, setUserName } = require('../helpers/recipe.helper');
 
 const Recipe = require('../models/recipe/recipe.model');
 const User = require('../models/user.model');
@@ -128,6 +128,25 @@ router.get('/listall', authorize, async (req, res) => {
 	} catch (err) {
 		return responseHandler.handleUnexpectedError(res, {
 			message: 'GET_ALL_RECIPES_ERROR',
+			error: err
+		});
+	}
+});
+
+router.get('/:recipeId', [authorize], async (req, res) => {
+	try {
+		let recipe = await Recipe.findById(req.params.recipeId);
+		if (recipe) {
+			recipe = await setUserName(recipe, User);
+			return responseHandler.handleOKResponse(res, {
+				message: 'RECIPE_FOUND',
+				recipe
+			});
+		}
+		return responseHandler.handleBadRequestError(res, 'RECIPE_NOT_FOUND');
+	} catch (err) {
+		return responseHandler.handleUnexpectedError(res, {
+			message: 'GET_RECIPE_ERROR',
 			error: err
 		});
 	}

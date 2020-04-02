@@ -24,7 +24,7 @@ module.exports = new mongoose.Schema({
 		unique: false
 	},
 	quantity: {
-		type: [Quantity],
+		type: Quantity,
 		required: true,
 		unique: false
 	}

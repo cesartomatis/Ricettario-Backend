@@ -26,7 +26,10 @@ module.exports = {
 				.required()
 				.min(1),
 			servings: Joi.number().required(),
-			tips: Joi.string().min(1)
+			tips: Joi.string()
+				.optional()
+				.allow('')
+				.min(1)
 		})
 	})
 };
